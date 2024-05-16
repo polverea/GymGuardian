@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "923439859899",
+    "project_id": "gymguardian-1e0b0",
+    "storage_bucket": "gymguardian-1e0b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923439859899:android:503a9ff97f5c15d5c4419e",
+        "android_client_info": {
+          "package_name": "com.example.gymguardian"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923439859899-4ei30bg11dbhb808bg1r3nj4i0pq6jhr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gymguardian",
+            "certificate_hash": "c47f2e3edd953ba158659db0595d96008f71fdd3"
+          }
+        },
+        {
+          "client_id": "923439859899-nab87bchno69j9ehoqa7hrbmt12bfslv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQdBQDt4W8A-p6tLm2ZPToy8pWJaa8bP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923439859899-nab87bchno69j9ehoqa7hrbmt12bfslv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
