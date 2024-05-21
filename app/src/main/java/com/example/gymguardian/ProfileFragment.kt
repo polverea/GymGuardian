@@ -1,11 +1,12 @@
 package com.example.gymguardian
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.gymguardian.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -16,11 +17,12 @@ class ProfileFragment : Fragment() {
     private var db = Firebase.firestore
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: FragmentProfileBinding
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment using binding
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -40,7 +42,7 @@ class ProfileFragment : Fragment() {
         val weight = binding.weightEditText.text.toString().trim()
         val height = binding.heightEditText.text.toString().trim()
         val age = binding.ageEditText.text.toString().trim()
-        val preferredName = binding.preferredName.text.toString().trim()
+        val preferredName = binding.preferredNameEditText.text.toString().trim()
         val dailyCalories = binding.caloriesEditText.text.toString().trim()
 
         if (weight.isEmpty() || height.isEmpty() || age.isEmpty() || preferredName.isEmpty() || dailyCalories.isEmpty()) {
@@ -49,10 +51,10 @@ class ProfileFragment : Fragment() {
         }
 
         val userDetails = hashMapOf(
-            "preferredName" to preferredName,
             "weight" to weight,
             "height" to height,
             "age" to age,
+            "preferredName" to preferredName,
             "dailyCalories" to dailyCalories
         )
 
@@ -62,6 +64,7 @@ class ProfileFragment : Fragment() {
                 .set(userDetails)
                 .addOnSuccessListener {
                     Toast.makeText(context, "Details saved successfully", Toast.LENGTH_SHORT).show()
+                    sharedViewModel.setProfileUpdated(true)
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(
