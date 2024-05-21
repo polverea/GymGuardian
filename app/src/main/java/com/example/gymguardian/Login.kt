@@ -17,11 +17,13 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class Login : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
+    val db = Firebase.firestore
     private lateinit var googleSignInClient: GoogleSignInClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,10 +75,30 @@ class Login : AppCompatActivity() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
-        if (currentUser != null) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+        currentUser?.let {
+            checkUserProfile(it.uid)
         }
+    }
+    private fun checkUserProfile(uid: String) {
+        db.collection("UsersInfo").document(uid).get()
+            .addOnSuccessListener { document ->
+                if (document.exists() && document.data?.get("weight") != null) {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    // User profile is not complete, redirect to ProfileActivity
+                    val intent = Intent(this, ProfileFragment::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+            .addOnFailureListener { e ->
+                // Handle the error
+                val intent = Intent(this, ProfileFragment::class.java)
+                startActivity(intent)
+                finish()
+            }
     }
 
     private fun googleSignIn()
