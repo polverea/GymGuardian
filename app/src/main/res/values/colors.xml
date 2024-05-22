@@ -6,4 +6,6 @@
     <color name="mygreen">#96f7</color>
     <color name="blue">#459DE4</color>
     <color name="red">#FF0000</color>
+    <color name="light_gray">#252734</color>
+    <color name="lavender_gray">#161825</color>
 </resources>
