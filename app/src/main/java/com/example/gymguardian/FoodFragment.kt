@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.gymguardian.databinding.FragmentFoodBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -26,7 +28,7 @@ class FoodFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFoodBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -39,26 +41,20 @@ class FoodFragment : Fragment() {
 
         setupDateNavigation()
         setupRecyclerViews()
+        setupAddMealButtons()
         loadMeals()
-
-        binding.addBreakfastButton.setOnClickListener {
-            showAddMealDialog("breakfast")
-        }
-        binding.addLunchButton.setOnClickListener {
-            showAddMealDialog("lunch")
-        }
-        binding.addDinnerButton.setOnClickListener {
-            showAddMealDialog("dinner")
-        }
-        binding.addSnacksButton.setOnClickListener {
-            showAddMealDialog("snacks")
-        }
     }
 
     private fun setupDateNavigation() {
         updateDateTextView()
-        binding.previousDayButton.setOnClickListener { changeDate(-1) }
-        binding.nextDayButton.setOnClickListener { changeDate(1) }
+        binding.root.findViewById<View>(R.id.previousDayButton).setOnClickListener { changeDate(-1) }
+        binding.root.findViewById<View>(R.id.nextDayButton).setOnClickListener { changeDate(1) }
+    }
+
+    private fun updateDateTextView() {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateText = sdf.format(selectedDate.time)
+        binding.root.findViewById<TextView>(R.id.dateTextView).text = dateText
     }
 
     private fun changeDate(days: Int) {
@@ -67,17 +63,33 @@ class FoodFragment : Fragment() {
         loadMeals()
     }
 
-    private fun updateDateTextView() {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val dateText = sdf.format(selectedDate.time)
-        binding.dateTextView.text = dateText
+    private fun setupRecyclerViews() {
+        setupRecyclerViewSection(binding.root.findViewById(R.id.breakfastSection), "Breakfast")
+        setupRecyclerViewSection(binding.root.findViewById(R.id.lunchSection), "Lunch")
+        setupRecyclerViewSection(binding.root.findViewById(R.id.dinnerSection), "Dinner")
+        setupRecyclerViewSection(binding.root.findViewById(R.id.snacksSection), "Snacks")
     }
 
-    private fun setupRecyclerViews() {
-        binding.breakfastRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.lunchRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.dinnerRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.snacksRecyclerView.layoutManager = LinearLayoutManager(context)
+    private fun setupRecyclerViewSection(sectionView: View, mealName: String) {
+        sectionView.findViewById<TextView>(R.id.mealTitle).text = mealName
+        val recyclerView = sectionView.findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = MealAdapter(emptyList()) // Set an empty list initially
+    }
+
+    private fun setupAddMealButtons() {
+        binding.root.findViewById<View>(R.id.breakfastSection).findViewById<View>(R.id.addMealButton).setOnClickListener {
+            showAddMealDialog("breakfast")
+        }
+        binding.root.findViewById<View>(R.id.lunchSection).findViewById<View>(R.id.addMealButton).setOnClickListener {
+            showAddMealDialog("lunch")
+        }
+        binding.root.findViewById<View>(R.id.dinnerSection).findViewById<View>(R.id.addMealButton).setOnClickListener {
+            showAddMealDialog("dinner")
+        }
+        binding.root.findViewById<View>(R.id.snacksSection).findViewById<View>(R.id.addMealButton).setOnClickListener {
+            showAddMealDialog("snacks")
+        }
     }
 
     private fun loadMeals() {
@@ -86,39 +98,43 @@ class FoodFragment : Fragment() {
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val today = sdf.format(selectedDate.time)
 
-            val mealTypes = listOf("breakfast", "lunch", "dinner", "snacks")
-            mealTypes.forEach { mealType ->
-                db.collection("UsersInfo").document(it.uid)
-                    .collection("Meals").document(today)
-                    .collection(mealType)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        val mealList = mutableListOf<Meal>()
-                        for (document in documents) {
-                            val meal = document.toObject(Meal::class.java)
-                            mealList.add(meal)
-                        }
-                        updateRecyclerView(mealType, mealList)
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(
-                            context,
-                            "Failed to load $mealType: ${e.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-            }
+            loadMealType(it.uid, today, "breakfast", binding.root.findViewById(R.id.breakfastSection))
+            loadMealType(it.uid, today, "lunch", binding.root.findViewById(R.id.lunchSection))
+            loadMealType(it.uid, today, "dinner", binding.root.findViewById(R.id.dinnerSection))
+            loadMealType(it.uid, today, "snacks", binding.root.findViewById(R.id.snacksSection))
         }
     }
 
-    private fun updateRecyclerView(mealType: String, mealList: List<Meal>) {
-        val adapter = MealAdapter(mealList)
-        when (mealType) {
-            "breakfast" -> binding.breakfastRecyclerView.adapter = adapter
-            "lunch" -> binding.lunchRecyclerView.adapter = adapter
-            "dinner" -> binding.dinnerRecyclerView.adapter = adapter
-            "snacks" -> binding.snacksRecyclerView.adapter = adapter
-        }
+    private fun loadMealType(uid: String, date: String, mealType: String, sectionView: View) {
+        db.collection("UsersInfo").document(uid)
+            .collection("Meals").document(date)
+            .collection(mealType)
+            .get()
+            .addOnSuccessListener { documents ->
+                val mealList = mutableListOf<Meal>()
+                var totalCalories = 0
+                var totalCarbs = 0
+                var totalProtein = 0
+                var totalFat = 0
+
+                for (document in documents) {
+                    val meal = document.toObject(Meal::class.java)
+                    mealList.add(meal)
+                    totalCalories += meal.calories
+                    totalCarbs += meal.carbs
+                    totalProtein += meal.protein
+                    totalFat += meal.fat
+                }
+
+                sectionView.findViewById<TextView>(R.id.totalCaloriesTextView).text = "Calories: $totalCalories kcal"
+                sectionView.findViewById<TextView>(R.id.totalMacrosTextView).text = "Carbs: ${totalCarbs}g, Protein: ${totalProtein}g, Fat: ${totalFat}g"
+
+                val recyclerView = sectionView.findViewById<RecyclerView>(R.id.recyclerView)
+                recyclerView.adapter = MealAdapter(mealList)
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Failed to load $mealType: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun showAddMealDialog(mealType: String) {
