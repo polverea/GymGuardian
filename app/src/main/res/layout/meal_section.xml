@@ -7,14 +7,14 @@
     android:paddingTop="16dp">
 
     <TextView
+        android:id="@+id/mealTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="Meal Name"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:paddingTop="16dp"
-        android:id="@+id/mealTitle"/>
+        android:paddingTop="16dp"/>
 
     <include
         layout="@layout/total_meal_layout"
