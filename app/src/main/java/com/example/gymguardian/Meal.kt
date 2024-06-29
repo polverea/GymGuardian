@@ -9,5 +9,6 @@ data class Meal(
     val carbs: Int = 0,
     val protein: Int = 0,
     val fat: Int = 0,
-    val quantity: Int = 0
+    val quantity: Int = 0,
+    var timestamp: com.google.firebase.Timestamp = com.google.firebase.Timestamp.now()
 )

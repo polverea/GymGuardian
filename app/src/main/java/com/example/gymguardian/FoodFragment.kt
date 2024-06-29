@@ -4,6 +4,7 @@ import SearchResultsAdapter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import com.example.gymguardian.api.RetrofitInstance
 import com.example.gymguardian.databinding.FragmentFoodBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +30,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 class FoodFragment : Fragment() {
     private var db = Firebase.firestore
@@ -94,7 +97,7 @@ class FoodFragment : Fragment() {
             user?.let {
                 val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val today = sdf.format(selectedDate.time)
-                deleteMeal(it.uid, today, mealName.toLowerCase(Locale.ROOT), meal, sectionView)
+                deleteMeal(it.uid, today, mealName.lowercase(Locale.ROOT), meal, sectionView)
             }
         }
     }
@@ -173,7 +176,6 @@ class FoodFragment : Fragment() {
             }
     }
 
-
     private fun deleteMeal(uid: String, date: String, mealType: String, meal: Meal, sectionView: View) {
         db.collection("UsersInfo").document(uid)
             .collection("Meals").document(date)
@@ -209,20 +211,38 @@ class FoodFragment : Fragment() {
         sectionView.findViewById<TextView>(R.id.totalMacrosTextView).text =
             "Carbs: ${totalCarbs}g, Protein: ${totalProtein}g, Fat: ${totalFat}g"
     }
+
     private fun showSearchMealDialog(mealType: String) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_add_meal, null)
         val dialogBuilder = AlertDialog.Builder(requireContext()).setView(dialogView)
         val alertDialog = dialogBuilder.show()
 
         val mealNameEditText = dialogView.findViewById<AutoCompleteTextView>(R.id.mealNameEditText)
+        val searchButton = dialogView.findViewById<Button>(R.id.searchButton)
         val searchResultsRecyclerView = dialogView.findViewById<RecyclerView>(R.id.searchResultsRecyclerView)
         searchResultsRecyclerView.layoutManager = LinearLayoutManager(context)
+
+        // Load recent foods when the dialog is opened
+        loadRecentFoods { recentFoods ->
+            Log.d("FoodFragment", "Recent foods loaded: ${recentFoods?.size ?: 0}")
+            if (recentFoods != null && recentFoods.isNotEmpty()) {
+                val adapter = SearchResultsAdapter(recentFoods) { selectedFoodItem ->
+                    showFoodDetailsDialog(selectedFoodItem, mealType)
+                    alertDialog.dismiss()
+                }
+                searchResultsRecyclerView.adapter = adapter
+                searchResultsRecyclerView.visibility = View.VISIBLE
+            } else {
+                searchResultsRecyclerView.visibility = View.GONE
+            }
+        }
 
         // Set up recent foods search
         mealNameEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 if (s.isNotEmpty()) {
                     searchRecentFoods(s.toString()) { recentFoods ->
+                        Log.d("FoodFragment", "Search result size: ${recentFoods?.size ?: 0}")
                         if (recentFoods != null && recentFoods.isNotEmpty()) {
                             val adapter = SearchResultsAdapter(recentFoods) { selectedFoodItem ->
                                 showFoodDetailsDialog(selectedFoodItem, mealType)
@@ -235,7 +255,19 @@ class FoodFragment : Fragment() {
                         }
                     }
                 } else {
-                    searchResultsRecyclerView.visibility = View.GONE
+                    loadRecentFoods { recentFoods ->
+                        Log.d("FoodFragment", "Recent foods loaded: ${recentFoods?.size ?: 0}")
+                        if (recentFoods != null && recentFoods.isNotEmpty()) {
+                            val adapter = SearchResultsAdapter(recentFoods) { selectedFoodItem ->
+                                showFoodDetailsDialog(selectedFoodItem, mealType)
+                                alertDialog.dismiss()
+                            }
+                            searchResultsRecyclerView.adapter = adapter
+                            searchResultsRecyclerView.visibility = View.VISIBLE
+                        } else {
+                            searchResultsRecyclerView.visibility = View.GONE
+                        }
+                    }
                 }
             }
 
@@ -244,11 +276,11 @@ class FoodFragment : Fragment() {
         })
 
         // Set up button search
-        val searchButton = dialogView.findViewById<Button>(R.id.searchButton)
         searchButton.setOnClickListener {
             val foodName = mealNameEditText.text.toString()
             if (foodName.isNotEmpty()) {
                 searchFood(foodName) { foodItems ->
+                    Log.d("FoodFragment", "Search food size: ${foodItems?.size ?: 0}")
                     if (foodItems != null && foodItems.isNotEmpty()) {
                         val adapter = SearchResultsAdapter(foodItems) { selectedFoodItem ->
                             showFoodDetailsDialog(selectedFoodItem, mealType)
@@ -264,22 +296,66 @@ class FoodFragment : Fragment() {
             }
         }
     }
-
-    private fun searchRecentFoods(query: String, callback: (List<Product>?) -> Unit) {
-        // Dummy implementation for recent foods, replace with actual logic
-        val recentFoods = listOf(
-            Product(product_name = "Banana", nutriments = Nutriments(energyKcal = 89f, carbohydrates = 23f, proteins = 1.1f, fat = 0.3f)),
-            Product(product_name = "Apple", nutriments = Nutriments(energyKcal = 52f, carbohydrates = 14f, proteins = 0.3f, fat = 0.2f))
-        ).filter { it.product_name.contains(query, ignoreCase = true) }
-        callback(recentFoods)
+    private fun loadRecentFoods(callback: (List<Product>?) -> Unit) {
+        val user = auth.currentUser
+        user?.let {
+            db.collection("UsersInfo").document(it.uid)
+                .collection("RecentFoods")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(5)
+                .get()
+                .addOnSuccessListener { documents ->
+                    val recentMeals = documents.mapNotNull { it.toObject(Meal::class.java) }
+                    val recentFoods = recentMeals.map { it.toProduct() }
+                    callback(recentFoods)
+                }
+                .addOnFailureListener {
+                    callback(null)
+                }
+        } ?: callback(null)
     }
 
+
+    private fun searchRecentFoods(query: String, callback: (List<Product>?) -> Unit) {
+        val user = auth.currentUser
+        user?.let {
+            db.collection("UsersInfo").document(it.uid)
+                .collection("RecentFoods")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(5)
+                .get()
+                .addOnSuccessListener { documents ->
+                    val recentFoods = documents.mapNotNull { it.toObject(Meal::class.java).toProduct() }
+                    val filteredFoods = if (query.isNotEmpty()) {
+                        recentFoods.filter { it.product_name.contains(query, ignoreCase = true) }
+                    } else {
+                        recentFoods
+                    }
+                    callback(filteredFoods)
+                }
+                .addOnFailureListener {
+                    callback(null)
+                }
+        } ?: callback(null)
+    }
+
+    private fun Meal.toProduct(): Product {
+        return Product(
+            product_name = this.name,
+            nutriments = Nutriments(
+                energyKcal = this.calories.toFloat(),
+                carbohydrates = this.carbs.toFloat(),
+                proteins = this.protein.toFloat(),
+                fat = this.fat.toFloat()
+            )
+        )
+    }
     private fun searchFood(foodName: String, callback: (List<Product>?) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = RetrofitInstance.api.searchProducts(foodName)
                 if (response.isSuccessful && response.body() != null) {
-                    val products = response.body()?.products?.filter { it.product_name != null } ?: emptyList()
+                    val products = response.body()?.products?.filter { true } ?: emptyList()
                     withContext(Dispatchers.Main) {
                         callback(products)
                     }
@@ -303,9 +379,9 @@ class FoodFragment : Fragment() {
         val alertDialog = dialogBuilder.show()
 
         dialogView.findViewById<TextView>(R.id.foodNameTextView).text = foodItem.product_name
-        dialogView.findViewById<TextView>(R.id.caloriesTextView).text = "Calories: ${(foodItem.nutriments.energyKcal ?: 0f).toInt()} kcal"
-        dialogView.findViewById<TextView>(R.id.carbsTextView).text = "Carbs: ${(foodItem.nutriments.carbohydrates ?: 0f).toInt()}g"
-        dialogView.findViewById<TextView>(R.id.proteinTextView).text = "Protein: ${(foodItem.nutriments.proteins ?: 0f).toInt()}g"
+        dialogView.findViewById<TextView>(R.id.caloriesTextView).text = "Calories: ${(foodItem.nutriments.energyKcal ?: 0f)} kcal"
+        dialogView.findViewById<TextView>(R.id.carbsTextView).text = "Carbs: ${(foodItem.nutriments.carbohydrates ?: 0f)}g"
+        dialogView.findViewById<TextView>(R.id.proteinTextView).text = "Protein: ${(foodItem.nutriments.proteins ?: 0f)}g"
         dialogView.findViewById<TextView>(R.id.fatTextView).text = "Fat: ${(foodItem.nutriments.fat ?: 0f).toInt()}g"
 
         val quantityEditText = dialogView.findViewById<EditText>(R.id.quantityEditText)
@@ -323,7 +399,6 @@ class FoodFragment : Fragment() {
             addSelectedFoodToMeal(foodItem, mealType, alertDialog, calories.toInt(), carbs.toInt(), protein.toInt(), fat.toInt(), quantity)
         }
     }
-
     private fun addSelectedFoodToMeal(
         selectedFoodItem: Product,
         mealType: String,
@@ -359,11 +434,66 @@ class FoodFragment : Fragment() {
                     Toast.makeText(context, "Meal added successfully", Toast.LENGTH_SHORT).show()
                     alertDialog.dismiss()
                     loadMeals()
+                    // Save the recent food with values for 100g
+                    saveRecentFood(user.uid, selectedFoodItem)
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(context, "Failed to add meal: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
+    }
+
+    private fun saveRecentFood(uid: String, product: Product) {
+        val recentFoodsRef = db.collection("UsersInfo").document(uid).collection("RecentFoods")
+
+        recentFoodsRef.whereEqualTo("name", product.product_name)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    // Update the timestamp of the existing document
+                    val existingDocId = documents.documents[0].id
+                    recentFoodsRef.document(existingDocId)
+                        .update("timestamp", com.google.firebase.Timestamp.now())
+                        .addOnSuccessListener {
+                            Log.d("FoodFragment", "Updated timestamp for recent food: ${product.product_name}")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("FoodFragment", "Failed to update timestamp: ${e.message}")
+                        }
+                } else {
+                    // Add a new document
+                    val meal = Meal(
+                        id = UUID.randomUUID().toString(),
+                        name = product.product_name,
+                        calories = (product.nutriments.energyKcal ?: 0f).roundToInt(),
+                        carbs = (product.nutriments.carbohydrates ?: 0f).roundToInt(),
+                        protein = (product.nutriments.proteins ?: 0f).roundToInt(),
+                        fat = (product.nutriments.fat ?: 0f).roundToInt(),
+                        quantity = 100, // Always 100g
+                        timestamp = com.google.firebase.Timestamp.now()
+                    )
+
+                    recentFoodsRef.document(meal.id)
+                        .set(meal)
+                        .addOnSuccessListener {
+                            Log.d("FoodFragment", "Saved recent food: $meal")
+                            recentFoodsRef.get().addOnSuccessListener { documents ->
+                                if (documents.size() > 5) {
+                                    val sortedDocs = documents.documents.sortedBy { it.getTimestamp("timestamp") }
+                                    for (i in 0 until documents.size() - 5) {
+                                        recentFoodsRef.document(sortedDocs[i].id).delete()
+                                    }
+                                }
+                            }
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("FoodFragment", "Failed to save recent food: ${e.message}")
+                        }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FoodFragment", "Failed to check for existing recent food: ${e.message}")
+            }
     }
 
     override fun onDestroyView() {
