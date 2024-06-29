@@ -1,6 +1,9 @@
 package com.example.gymguardian
 
+import java.util.UUID
+
 data class Meal(
+    var id: String = UUID.randomUUID().toString(),
     val name: String = "",
     val calories: Int = 0,
     val carbs: Int = 0,
