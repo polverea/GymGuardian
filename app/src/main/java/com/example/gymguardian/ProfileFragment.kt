@@ -36,6 +36,10 @@ class ProfileFragment : Fragment() {
         binding.saveButton.setOnClickListener {
             saveUserDetails()
         }
+
+        binding.goalsButton.setOnClickListener {
+            navigateToGoalFragment()
+        }
     }
 
     private fun saveUserDetails() {
@@ -43,9 +47,8 @@ class ProfileFragment : Fragment() {
         val height = binding.heightEditText.text.toString().trim()
         val age = binding.ageEditText.text.toString().trim()
         val preferredName = binding.preferredNameEditText.text.toString().trim()
-        val dailyCalories = binding.caloriesEditText.text.toString().trim()
 
-        if (weight.isEmpty() || height.isEmpty() || age.isEmpty() || preferredName.isEmpty() || dailyCalories.isEmpty()) {
+        if (weight.isEmpty() || height.isEmpty() || age.isEmpty() || preferredName.isEmpty()) {
             Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             return
         }
@@ -54,8 +57,7 @@ class ProfileFragment : Fragment() {
             "weight" to weight,
             "height" to height,
             "age" to age,
-            "preferredName" to preferredName,
-            "dailyCalories" to dailyCalories
+            "preferredName" to preferredName
         )
 
         val user = auth.currentUser
@@ -74,5 +76,13 @@ class ProfileFragment : Fragment() {
                     ).show()
                 }
         }
+    }
+
+    private fun navigateToGoalFragment() {
+        val fragment = GoalFragment()
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frameLayout, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }

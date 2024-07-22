@@ -131,13 +131,13 @@
                         android:layout_height="wrap_content"
                         android:progressTint="@color/blue"
                         android:max="100"
-                        android:progress="70"/>
+                        android:progress="0"/>
 
                     <TextView
                         android:id="@+id/carbsTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0g"
+                        android:text="0g of 0g"
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         android:gravity="center_horizontal"
@@ -167,13 +167,13 @@
                         android:layout_height="wrap_content"
                         android:progressTint="@color/red"
                         android:max="100"
-                        android:progress="40"/>
+                        android:progress="0"/>
 
                     <TextView
                         android:id="@+id/fatTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0g"
+                        android:text="0g of 0g"
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         android:gravity="center_horizontal"
@@ -203,13 +203,13 @@
                         android:layout_height="wrap_content"
                         android:progressTint="@color/green"
                         android:max="100"
-                        android:progress="50"/>
+                        android:progress="0"/>
 
                     <TextView
                         android:id="@+id/proteinTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0g"
+                        android:text="0g of 0g"
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         android:gravity="center_horizontal"

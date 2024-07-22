@@ -6,20 +6,19 @@
     android:padding="16dp"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="#497CA5">
+    android:background="@color/lavender_gray">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        app:cardCornerRadius="30dp"
-        app:cardElevation="20dp" >
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        android:backgroundTint="@color/lavender_gray">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="656dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/custom_edittext"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="24dp"
             android:gravity="center">
@@ -29,81 +28,80 @@
                 android:layout_height="wrap_content"
                 android:text="Add your information"
                 android:textAlignment="center"
-                android:textColor="@color/lavender"
-                android:textSize="36sp"
-                android:textStyle="bold" />
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:paddingBottom="16dp" />
 
             <EditText
                 android:id="@+id/preferredNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/custom_edittext"
                 android:drawablePadding="8dp"
                 android:hint="Preferred Name"
                 android:inputType="text"
                 android:padding="8dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black" />
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray" />
 
             <EditText
                 android:id="@+id/weightEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/custom_edittext"
                 android:drawablePadding="8dp"
                 android:hint="Weight (kg)"
                 android:inputType="number"
                 android:padding="8dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black" />
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray" />
 
             <EditText
                 android:id="@+id/heightEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/custom_edittext"
                 android:drawablePadding="8dp"
                 android:hint="Height (cm)"
                 android:inputType="number"
                 android:padding="8dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black" />
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray" />
 
             <EditText
                 android:id="@+id/ageEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/custom_edittext"
                 android:drawablePadding="8dp"
                 android:hint="Age"
                 android:inputType="number"
                 android:padding="8dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black" />
-
-            <EditText
-                android:id="@+id/caloriesEditText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/custom_edittext"
-                android:drawablePadding="8dp"
-                android:hint="Daily Calories"
-                android:inputType="number"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black" />
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray" />
 
             <Button
                 android:id="@+id/saveButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:text="Save" />
+                android:layout_marginTop="24dp"
+                android:text="Save"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/lavender" />
+
+            <Button
+                android:id="@+id/goalsButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:text="Set Goals"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/lavender" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

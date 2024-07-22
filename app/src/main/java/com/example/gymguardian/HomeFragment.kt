@@ -12,6 +12,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.*
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -51,11 +53,14 @@ class HomeFragment : Fragment() {
                 .addOnSuccessListener { document ->
                     if (document != null && _binding != null) {
                         val preferredName = document.getString("preferredName") ?: "User"
-                        val dailyCalories = document.getString("dailyCalories")?.toInt() ?: 0
+                        val dailyCalories = document.getString("caloriesGoal")?.toInt() ?: 0
+                        val dailyCarbs = document.getString("carbsGoal")?.toInt() ?: 0
+                        val dailyProtein = document.getString("proteinGoal")?.toInt() ?: 0
+                        val dailyFat = document.getString("fatGoal")?.toInt() ?: 0
                         binding.welcomeTextView.text = "Welcome, $preferredName"
 
-                        // Load the consumed calories
-                        loadMeals(it.uid, dailyCalories)
+                        // Load the consumed calories and macros
+                        loadMeals(it.uid, dailyCalories, dailyCarbs, dailyProtein, dailyFat)
                     }
                 }
                 .addOnFailureListener { e ->
@@ -64,9 +69,9 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun loadMeals(uid: String, dailyCalories: Int) {
-        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
-        val today = sdf.format(java.util.Calendar.getInstance().time)
+    private fun loadMeals(uid: String, dailyCalories: Int, dailyCarbs: Int, dailyProtein: Int, dailyFat: Int) {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val today = sdf.format(Calendar.getInstance().time)
         val mealTypes = listOf("breakfast", "lunch", "dinner", "snacks")
         var consumedCalories = 0
         var totalCarbs = 0
@@ -98,7 +103,7 @@ class HomeFragment : Fragment() {
                     totalFat += mealFat
 
                     updateCalorieSummary(dailyCalories, consumedCalories)
-                    updateProgressBars(totalCarbs, totalFat, totalProtein)
+                    updateProgressBars(totalCarbs, totalFat, totalProtein, dailyCarbs, dailyFat, dailyProtein)
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(context, "Failed to load $mealType: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -118,20 +123,20 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun updateProgressBars(carbs: Int, fat: Int, protein: Int) {
-        val total = carbs + fat + protein
+    private fun updateProgressBars(carbs: Int, fat: Int, protein: Int, dailyCarbs: Int, dailyFat: Int, dailyProtein: Int) {
+        if (_binding != null) {
+            binding.carbsProgressBar.max = dailyCarbs
+            binding.carbsProgressBar.progress = carbs
+            binding.carbsTextView.text = "$carbs g of $dailyCarbs g"
 
-        binding.carbsProgressBar.max = total
-        binding.carbsProgressBar.progress = carbs
-        binding.carbsTextView.text = "$carbs g"
+            binding.fatProgressBar.max = dailyFat
+            binding.fatProgressBar.progress = fat
+            binding.fatTextView.text = "$fat g of $dailyFat g"
 
-        binding.fatProgressBar.max = total
-        binding.fatProgressBar.progress = fat
-        binding.fatTextView.text = "$fat g"
-
-        binding.proteinProgressBar.max = total
-        binding.proteinProgressBar.progress = protein
-        binding.proteinTextView.text = "$protein g"
+            binding.proteinProgressBar.max = dailyProtein
+            binding.proteinProgressBar.progress = protein
+            binding.proteinTextView.text = "$protein g of $dailyProtein g"
+        }
     }
 
     override fun onDestroyView() {
