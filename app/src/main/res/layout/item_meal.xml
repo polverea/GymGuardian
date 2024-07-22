@@ -92,6 +92,14 @@
                 android:text="Fat: 0 g"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/timeAddedTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time Added"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

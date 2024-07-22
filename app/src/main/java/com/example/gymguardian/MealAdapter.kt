@@ -7,6 +7,8 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MealAdapter(
     val meals: MutableList<Meal>,
@@ -22,10 +24,12 @@ class MealAdapter(
         val mealCarbsTextView: TextView = itemView.findViewById(R.id.mealCarbsTextView)
         val mealProteinTextView: TextView = itemView.findViewById(R.id.mealProteinTextView)
         val mealFatTextView: TextView = itemView.findViewById(R.id.mealFatTextView)
+        val timeAddedTextView: TextView = itemView.findViewById(R.id.timeAddedTextView) // Adăugăm TextView-ul pentru ora adăugării
 
         fun bind(meal: Meal) {
             mealNameTextView.text = meal.name
             mealCaloriesTextView.text = "${meal.calories} kcal"
+            timeAddedTextView.text = "Added at: ${SimpleDateFormat("HH:mm", Locale.getDefault()).format(meal.timestamp.toDate())}" // Setăm ora adăugării
 
             // Bind expandable content initially
             bindExpandableContent(meal)

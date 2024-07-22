@@ -422,7 +422,8 @@ class FoodFragment : Fragment() {
                 carbs = carbs,
                 protein = protein,
                 fat = fat,
-                quantity = quantity
+                quantity = quantity,
+                timestamp = com.google.firebase.Timestamp.now() // Setăm ora curentă
             )
 
             db.collection("UsersInfo").document(it.uid)
@@ -442,6 +443,7 @@ class FoodFragment : Fragment() {
                 }
         }
     }
+
 
     private fun saveRecentFood(uid: String, product: Product) {
         val recentFoodsRef = db.collection("UsersInfo").document(uid).collection("RecentFoods")
