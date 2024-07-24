@@ -21,14 +21,15 @@ data class ProductResponse(
 )
 
 data class Product(
-    val product_name: String,
-    val nutriments: Nutriments
+    val product_name: String = "",
+    val nutriments: Nutriments = Nutriments(),
+    var timestamp: com.google.firebase.Timestamp? = null
 )
 
 data class Nutriments(
     @SerializedName("energy-kcal")
-    val energyKcal: Float?,
-    val carbohydrates: Float?,
-    val proteins: Float?,
-    val fat: Float?
+    val energyKcal: Float? = 0f,
+    val carbohydrates: Float? = 0f,
+    val proteins: Float? = 0f,
+    val fat: Float? = 0f
 )

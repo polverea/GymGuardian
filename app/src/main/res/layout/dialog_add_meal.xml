@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search Food"
+        android:text="Add Meal"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -21,27 +21,36 @@
         android:id="@+id/mealNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search Food"
+        android:hint="Meal Name"
         android:background="@drawable/custom_edittext"
         android:padding="8dp"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/darker_gray"
-        android:inputType="text"
-        android:completionThreshold="1" />
+        android:inputType="text" />
 
     <Button
         android:id="@+id/searchButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Search"
-        android:background="@color/white"
+        android:backgroundTint="@color/lavender"
         android:textColor="@android:color/white"
-        android:layout_marginTop="8dp"
-        android:padding="8dp" />
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/addOwnMealButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Own Meal"
+        android:backgroundTint="@color/lavender"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchResultsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp" />
+        android:visibility="gone"
+        android:layout_marginTop="16dp" />
 </LinearLayout>
+
