@@ -16,14 +16,15 @@ import com.google.firebase.ktx.Firebase
 class ProfileFragment : Fragment() {
     private var db = Firebase.firestore
     private lateinit var auth: FirebaseAuth
-    private lateinit var binding: FragmentProfileBinding
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentProfileBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -33,16 +34,43 @@ class ProfileFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
+        loadUserProfile()
+
         binding.saveButton.setOnClickListener {
-            saveUserDetails()
+            saveOrUpdateUserDetails()
         }
 
         binding.goalsButton.setOnClickListener {
-            navigateToGoalFragment()
+            // Navigate to GoalFragment
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frameLayout, GoalFragment())
+                .addToBackStack(null)
+                .commit()
         }
     }
 
-    private fun saveUserDetails() {
+    private fun loadUserProfile() {
+        val user = auth.currentUser
+        user?.let {
+            db.collection("UsersInfo").document(it.uid)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        binding.preferredNameEditText.setText(document.getString("preferredName"))
+                        binding.weightEditText.setText(document.getString("weight"))
+                        binding.heightEditText.setText(document.getString("height"))
+                        binding.ageEditText.setText(document.getString("age"))
+
+                        binding.saveButton.text = "Update"
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(context, "Failed to load user data: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun saveOrUpdateUserDetails() {
         val weight = binding.weightEditText.text.toString().trim()
         val height = binding.heightEditText.text.toString().trim()
         val age = binding.ageEditText.text.toString().trim()
@@ -67,22 +95,16 @@ class ProfileFragment : Fragment() {
                 .addOnSuccessListener {
                     Toast.makeText(context, "Details saved successfully", Toast.LENGTH_SHORT).show()
                     sharedViewModel.setProfileUpdated(true)
+                    binding.saveButton.text = "Update"
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(
-                        context,
-                        "Failed to save details: ${e.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(context, "Failed to save details: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
     }
 
-    private fun navigateToGoalFragment() {
-        val fragment = GoalFragment()
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.frameLayout, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

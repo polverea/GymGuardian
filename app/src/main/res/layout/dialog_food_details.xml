@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Food Name"
+        android:textSize="18sp"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
         android:paddingBottom="8dp"/>
@@ -23,8 +23,7 @@
         android:layout_height="wrap_content"
         android:text="Calories: 0 kcal"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="4dp" />
 
     <TextView
         android:id="@+id/carbsTextView"
@@ -32,8 +31,7 @@
         android:layout_height="wrap_content"
         android:text="Carbs: 0g"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="4dp" />
 
     <TextView
         android:id="@+id/proteinTextView"
@@ -41,8 +39,7 @@
         android:layout_height="wrap_content"
         android:text="Protein: 0g"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="4dp" />
 
     <TextView
         android:id="@+id/fatTextView"
@@ -50,26 +47,25 @@
         android:layout_height="wrap_content"
         android:text="Fat: 0g"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="16dp" />
 
     <EditText
         android:id="@+id/quantityEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Quantity (g)"
-        android:background="@drawable/custom_edittext"
-        android:padding="8dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/darker_gray"
         android:inputType="number"
-        android:layout_marginBottom="16dp"/>
+        android:padding="8dp"
+        android:background="@drawable/custom_edittext"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/darker_gray" />
 
     <Button
         android:id="@+id/addMealButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add Meal"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/lavender"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
 </LinearLayout>
