@@ -43,15 +43,29 @@
         android:paddingBottom="8dp"/>
 
     <!-- Consumed Calories -->
-    <TextView
-        android:id="@+id/consumedCaloriesTextView"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Consumed: 0 kcal"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/consumedCaloriesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Consumed: 0 kcal"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+
+        <ImageView
+            android:id="@+id/warningIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_warning"
+            android:visibility="gone"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
 
     <!-- Remaining Calories -->
     <TextView

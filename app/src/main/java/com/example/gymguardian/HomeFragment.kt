@@ -1,10 +1,15 @@
 package com.example.gymguardian
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.gymguardian.databinding.FragmentHomeBinding
@@ -120,22 +125,41 @@ class HomeFragment : Fragment() {
             // Update progress bar
             binding.caloriesProgressBar.max = dailyCalories
             binding.caloriesProgressBar.progress = consumedCalories
+
+            // Acesta este doar fragmentul în care se utilizează warningIcon
+            if (consumedCalories > dailyCalories) {
+                binding.consumedCaloriesTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                binding.consumedCaloriesTextView.text = "${binding.consumedCaloriesTextView.text} (Exceeded)"
+                binding.consumedCaloriesTextView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
+                binding.warningIcon.visibility = View.VISIBLE
+            } else {
+                binding.consumedCaloriesTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                binding.warningIcon.visibility = View.GONE
+            }
         }
     }
 
     private fun updateProgressBars(carbs: Int, fat: Int, protein: Int, dailyCarbs: Int, dailyFat: Int, dailyProtein: Int) {
         if (_binding != null) {
-            binding.carbsProgressBar.max = dailyCarbs
-            binding.carbsProgressBar.progress = carbs
-            binding.carbsTextView.text = "$carbs g of $dailyCarbs g"
+            updateSingleProgressBar(binding.carbsProgressBar, binding.carbsTextView, carbs, dailyCarbs, "Carbs")
+            updateSingleProgressBar(binding.fatProgressBar, binding.fatTextView, fat, dailyFat, "Fat")
+            updateSingleProgressBar(binding.proteinProgressBar, binding.proteinTextView, protein, dailyProtein, "Protein")
+        }
+    }
 
-            binding.fatProgressBar.max = dailyFat
-            binding.fatProgressBar.progress = fat
-            binding.fatTextView.text = "$fat g of $dailyFat g"
+    private fun updateSingleProgressBar(progressBar: ProgressBar, textView: TextView, total: Int, goal: Int, nutrientName: String) {
+        progressBar.max = goal
+        progressBar.progress = total
 
-            binding.proteinProgressBar.max = dailyProtein
-            binding.proteinProgressBar.progress = protein
-            binding.proteinTextView.text = "$protein g of $dailyProtein g"
+        if (total > goal) {
+            textView.text = "$nutrientName: $total g of $goal g (Exceeded)"
+            textView.setTextColor(Color.RED)
+            textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_warning, 0)
+            textView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
+        } else {
+            textView.text = "$nutrientName: $total g of $goal g"
+            textView.setTextColor(Color.WHITE)
+            textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
         }
     }
 

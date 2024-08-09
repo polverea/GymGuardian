@@ -17,7 +17,7 @@ class ProfileFragment : Fragment() {
     private var db = Firebase.firestore
     private lateinit var auth: FirebaseAuth
     private var _binding: FragmentProfileBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding ?: throw IllegalStateException("ViewBinding not initialized")
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(

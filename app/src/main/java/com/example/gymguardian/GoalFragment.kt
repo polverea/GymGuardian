@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.gymguardian.databinding.FragmentGoalBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -103,9 +104,13 @@ class GoalFragment : Fragment() {
         if (totalCalories > caloriesGoal) {
             binding.totalCaloriesTextView.setTextColor(Color.RED)
             binding.errorTextView.visibility = View.VISIBLE
+            binding.saveGoalsButton.isEnabled = false
+            binding.saveGoalsButton.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.darker_gray))
         } else {
             binding.totalCaloriesTextView.setTextColor(Color.WHITE)
             binding.errorTextView.visibility = View.GONE
+            binding.saveGoalsButton.isEnabled = true
+            binding.saveGoalsButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.lavender))
         }
     }
 
