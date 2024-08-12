@@ -14,10 +14,11 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class ProfileFragment : Fragment() {
-    private var db = Firebase.firestore
-    private lateinit var auth: FirebaseAuth
+
     private var _binding: FragmentProfileBinding? = null
-    private val binding get() = _binding ?: throw IllegalStateException("ViewBinding not initialized")
+    private val binding get() = _binding!!
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -32,7 +33,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
+        db = Firebase.firestore
 
         loadUserProfile()
 
@@ -41,7 +42,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.goalsButton.setOnClickListener {
-            // Navigate to GoalFragment
+            // Navighează la GoalFragment
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.frameLayout, GoalFragment())
                 .addToBackStack(null)
@@ -55,7 +56,7 @@ class ProfileFragment : Fragment() {
             db.collection("UsersInfo").document(it.uid)
                 .get()
                 .addOnSuccessListener { document ->
-                    if (document != null && document.exists()) {
+                    if (_binding != null && document != null && document.exists()) {
                         binding.preferredNameEditText.setText(document.getString("preferredName"))
                         binding.weightEditText.setText(document.getString("weight"))
                         binding.heightEditText.setText(document.getString("height"))
@@ -65,12 +66,16 @@ class ProfileFragment : Fragment() {
                     }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(context, "Failed to load user data: ${e.message}", Toast.LENGTH_SHORT).show()
+                    if (_binding != null) {
+                        Toast.makeText(context, "Failed to load user data: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
                 }
         }
     }
 
     private fun saveOrUpdateUserDetails() {
+        if (_binding == null) return
+
         val weight = binding.weightEditText.text.toString().trim()
         val height = binding.heightEditText.text.toString().trim()
         val age = binding.ageEditText.text.toString().trim()
@@ -93,12 +98,16 @@ class ProfileFragment : Fragment() {
             db.collection("UsersInfo").document(it.uid)
                 .set(userDetails)
                 .addOnSuccessListener {
-                    Toast.makeText(context, "Details saved successfully", Toast.LENGTH_SHORT).show()
-                    sharedViewModel.setProfileUpdated(true)
-                    binding.saveButton.text = "Update"
+                    if (_binding != null) {
+                        Toast.makeText(context, "Details saved successfully", Toast.LENGTH_SHORT).show()
+                        sharedViewModel.setProfileUpdated(true)
+                        binding.saveButton.text = "Update"
+                    }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(context, "Failed to save details: ${e.message}", Toast.LENGTH_SHORT).show()
+                    if (_binding != null) {
+                        Toast.makeText(context, "Failed to save details: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
                 }
         }
     }

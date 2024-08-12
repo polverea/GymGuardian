@@ -126,15 +126,13 @@ class HomeFragment : Fragment() {
             binding.caloriesProgressBar.max = dailyCalories
             binding.caloriesProgressBar.progress = consumedCalories
 
-            // Acesta este doar fragmentul în care se utilizează warningIcon
+            // Verifică dacă caloriile consumate depășesc obiectivul zilnic
             if (consumedCalories > dailyCalories) {
                 binding.consumedCaloriesTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                 binding.consumedCaloriesTextView.text = "${binding.consumedCaloriesTextView.text} (Exceeded)"
                 binding.consumedCaloriesTextView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
-                binding.warningIcon.visibility = View.VISIBLE
             } else {
                 binding.consumedCaloriesTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                binding.warningIcon.visibility = View.GONE
             }
         }
     }
@@ -154,14 +152,13 @@ class HomeFragment : Fragment() {
         if (total > goal) {
             textView.text = "$nutrientName: $total g of $goal g (Exceeded)"
             textView.setTextColor(Color.RED)
-            textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_warning, 0)
             textView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
         } else {
             textView.text = "$nutrientName: $total g of $goal g"
             textView.setTextColor(Color.WHITE)
-            textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

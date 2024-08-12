@@ -82,19 +82,19 @@ class Login : AppCompatActivity() {
     private fun checkUserProfile(uid: String) {
         db.collection("UsersInfo").document(uid).get()
             .addOnSuccessListener { document ->
+                val intent = Intent(this, MainActivity::class.java)
                 if (document.exists() && document.getString("preferredName") != null) {
-                    val intent = Intent(this, MainActivity::class.java)
+                    // Profil complet - deschide direct MainActivity
                     startActivity(intent)
-                    finish()
                 } else {
-                    // User profile is not complete, redirect to MainActivity and show ProfileFragment
-                    val intent = Intent(this, MainActivity::class.java)
+                    // Profil incomplet - deschide MainActivity cu profilul forțat
                     intent.putExtra("showProfileFragment", true)
                     startActivity(intent)
-                    finish()
                 }
+                finish()
             }
-            .addOnFailureListener { e ->
+            .addOnFailureListener {
+                // În caz de eroare, du utilizatorul la MainActivity pentru a gestiona problema
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("showProfileFragment", true)
                 startActivity(intent)
