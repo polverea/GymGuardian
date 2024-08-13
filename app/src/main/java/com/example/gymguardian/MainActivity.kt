@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = Firebase.firestore
 
-        // Setează fragmentul implicit înainte de a verifica profilul utilizatorului
         replaceFragment(HomeFragment())
         checkUserProfile()
     }
@@ -41,21 +40,17 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("fatGoal") != null
 
                         if (preferredName.isNullOrEmpty() || !hasGoals) {
-                            // Navighează către ProfileFragment dacă profilul nu este complet
                             replaceFragment(ProfileFragment())
                             disableNavigation()
                         } else {
-                            // Asigură-te că navigarea este activată dacă totul este complet
                             enableNavigation()
                         }
                     } else {
-                        // Documentul nu există, deci navighează către ProfileFragment
                         replaceFragment(ProfileFragment())
                         disableNavigation()
                     }
                 }
                 .addOnFailureListener {
-                    // În caz de eșec, navighează către ProfileFragment și dezactivează navigarea
                     replaceFragment(ProfileFragment())
                     disableNavigation()
                 }
@@ -65,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, fragment)
-            .commitNowAllowingStateLoss()  // Asigură înlocuirea imediată a fragmentului
+            .commitNowAllowingStateLoss()
     }
 
     private fun disableNavigation() {
@@ -73,12 +68,11 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.menu.findItem(R.id.food).isEnabled = false
     }
 
-    private fun enableNavigation() {
+    fun enableNavigation() {
         binding.bottomNavigationView.menu.findItem(R.id.home).isEnabled = true
         binding.bottomNavigationView.menu.findItem(R.id.food).isEnabled = true
     }
 
-    // Navigarea între fragmente din BottomNavigationView
     override fun onStart() {
         super.onStart()
 

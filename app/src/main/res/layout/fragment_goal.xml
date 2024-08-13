@@ -18,144 +18,148 @@
         android:gravity="center"
         android:paddingBottom="16dp" />
 
-    <!-- Label and EditText for Daily Calories Goal -->
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Daily Calories Goal (kcal)"
-        android:textColor="@android:color/darker_gray"
-        android:paddingBottom="4dp"/>
-    <EditText
-        android:id="@+id/caloriesGoalEditText"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/custom_edittext"
-        android:drawablePadding="8dp"
-        android:hint="Enter your daily calories goal"
-        android:inputType="number"
-        android:padding="8dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/darker_gray" />
+        android:layout_margin="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        android:backgroundTint="@color/light_gray">
 
-    <!-- Label and EditText for Carbs Goal -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Carbs Goal (g)"
-        android:textColor="@android:color/darker_gray"
-        android:paddingBottom="4dp"/>
-    <EditText
-        android:id="@+id/carbsGoalEditText"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/custom_edittext"
-        android:drawablePadding="8dp"
-        android:hint="Enter carbs goal"
-        android:inputType="number"
-        android:padding="8dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/darker_gray" />
-    <TextView
-        android:id="@+id/carbsCaloriesTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Carbs: 0 g (0 kcal)"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:gravity="center_horizontal"
-        android:paddingTop="4dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    <!-- Label and EditText for Protein Goal -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Protein Goal (g)"
-        android:textColor="@android:color/darker_gray"
-        android:paddingBottom="4dp"/>
-    <EditText
-        android:id="@+id/proteinGoalEditText"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/custom_edittext"
-        android:drawablePadding="8dp"
-        android:hint="Enter protein goal"
-        android:inputType="number"
-        android:padding="8dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/darker_gray" />
-    <TextView
-        android:id="@+id/proteinCaloriesTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Protein: 0 g (0 kcal)"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:gravity="center_horizontal"
-        android:paddingTop="4dp"/>
+            <!-- Label and EditText for Daily Calories Goal -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Daily Calories Goal (kcal)"
+                android:textColor="@android:color/darker_gray"
+                android:paddingBottom="4dp"/>
+            <EditText
+                android:id="@+id/caloriesGoalEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/custom_edittext"
+                android:drawablePadding="8dp"
+                android:hint="Enter your daily calories goal"
+                android:inputType="number"
+                android:padding="8dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray" />
 
-    <!-- Label and EditText for Fat Goal -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Fat Goal (g)"
-        android:textColor="@android:color/darker_gray"
-        android:paddingBottom="4dp"/>
-    <EditText
-        android:id="@+id/fatGoalEditText"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/custom_edittext"
-        android:drawablePadding="8dp"
-        android:hint="Enter fat goal"
-        android:inputType="number"
-        android:padding="8dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/darker_gray" />
-    <TextView
-        android:id="@+id/fatCaloriesTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Fat: 0 g (0 kcal)"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:gravity="center_horizontal"
-        android:paddingTop="4dp"/>
+            <!-- Label and EditText for Protein Goal -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Protein Goal (g)"
+                android:textColor="@android:color/darker_gray"
+                android:paddingBottom="4dp"/>
+            <EditText
+                android:id="@+id/proteinGoalEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/custom_edittext"
+                android:drawablePadding="8dp"
+                android:hint="Enter protein goal"
+                android:inputType="number"
+                android:padding="8dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray" />
+            <TextView
+                android:id="@+id/proteinCaloriesTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Protein: 0 g (0 kcal)"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:gravity="center_horizontal"
+                android:paddingTop="4dp"/>
 
-    <!-- Error TextView -->
-    <TextView
-        android:id="@+id/errorTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Total macro nutrients must not exceed daily calorie goal."
-        android:textColor="@android:color/holo_red_light"
-        android:textSize="14sp"
-        android:gravity="center"
-        android:visibility="gone"
-        android:paddingTop="8dp"/>
+            <!-- Label and EditText for Carbs Goal -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Carbs Goal (g)"
+                android:textColor="@android:color/darker_gray"
+                android:paddingBottom="4dp"/>
+            <EditText
+                android:id="@+id/carbsGoalEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/custom_edittext"
+                android:drawablePadding="8dp"
+                android:hint="Enter carbs goal"
+                android:inputType="number"
+                android:padding="8dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray" />
+            <TextView
+                android:id="@+id/carbsCaloriesTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Carbs: 0 g (0 kcal)"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:gravity="center_horizontal"
+                android:paddingTop="4dp"/>
 
-    <!-- Save Goals Button -->
-    <Button
-        android:id="@+id/saveGoalsButton"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:text="Save Goals"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@color/lavender" />
+            <!-- Label and EditText for Fat Goal -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fat Goal (g)"
+                android:textColor="@android:color/darker_gray"
+                android:paddingBottom="4dp"/>
+            <EditText
+                android:id="@+id/fatGoalEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/custom_edittext"
+                android:drawablePadding="8dp"
+                android:hint="Enter fat goal"
+                android:inputType="number"
+                android:padding="8dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray" />
+            <TextView
+                android:id="@+id/fatCaloriesTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fat: 0 g (0 kcal)"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:gravity="center_horizontal"
+                android:paddingTop="4dp"/>
 
-    <!-- Total Calories TextView -->
-    <TextView
-        android:id="@+id/totalCaloriesTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Total: 0 kcal of 0 kcal"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:paddingBottom="8dp"/>
+            <!-- Save Goals Button -->
+            <Button
+                android:id="@+id/saveGoalsButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:text="Save Goals"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/lavender" />
+
+            <!-- Total Calories TextView -->
+            <TextView
+                android:id="@+id/totalCaloriesTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total: 0 kcal of 0 kcal"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:paddingBottom="8dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

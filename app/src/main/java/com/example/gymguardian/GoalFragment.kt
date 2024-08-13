@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.example.gymguardian.databinding.FragmentGoalBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -40,7 +41,6 @@ class GoalFragment : Fragment() {
             saveGoals()
         }
 
-        // Adăugăm un text watcher pentru a calcula calorii
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -50,11 +50,10 @@ class GoalFragment : Fragment() {
         }
 
         binding.caloriesGoalEditText.addTextChangedListener(textWatcher)
-        binding.carbsGoalEditText.addTextChangedListener(textWatcher)
         binding.proteinGoalEditText.addTextChangedListener(textWatcher)
+        binding.carbsGoalEditText.addTextChangedListener(textWatcher)
         binding.fatGoalEditText.addTextChangedListener(textWatcher)
 
-        // Încărcăm valorile existente
         loadGoals()
     }
 
@@ -65,14 +64,14 @@ class GoalFragment : Fragment() {
                 .get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
-                        val caloriesGoal = document.getString("caloriesGoal") ?: "0"
-                        val carbsGoal = document.getString("carbsGoal") ?: "0"
-                        val proteinGoal = document.getString("proteinGoal") ?: "0"
-                        val fatGoal = document.getString("fatGoal") ?: "0"
+                        val caloriesGoal = document.getString("caloriesGoal") ?: ""
+                        val proteinGoal = document.getString("proteinGoal") ?: ""
+                        val carbsGoal = document.getString("carbsGoal") ?: ""
+                        val fatGoal = document.getString("fatGoal") ?: ""
 
                         binding.caloriesGoalEditText.setText(caloriesGoal)
-                        binding.carbsGoalEditText.setText(carbsGoal)
                         binding.proteinGoalEditText.setText(proteinGoal)
+                        binding.carbsGoalEditText.setText(carbsGoal)
                         binding.fatGoalEditText.setText(fatGoal)
 
                         calculateCalories()
@@ -86,67 +85,65 @@ class GoalFragment : Fragment() {
 
     private fun calculateCalories() {
         val caloriesGoal = binding.caloriesGoalEditText.text.toString().toIntOrNull() ?: 0
-        val carbs = binding.carbsGoalEditText.text.toString().toIntOrNull() ?: 0
         val protein = binding.proteinGoalEditText.text.toString().toIntOrNull() ?: 0
+        val carbs = binding.carbsGoalEditText.text.toString().toIntOrNull() ?: 0
         val fat = binding.fatGoalEditText.text.toString().toIntOrNull() ?: 0
 
-        val carbsCalories = carbs * 4
         val proteinCalories = protein * 4
+        val carbsCalories = carbs * 4
         val fatCalories = fat * 9
 
-        binding.carbsCaloriesTextView.text = "Carbs: $carbs g (${carbsCalories} kcal)"
-        binding.proteinCaloriesTextView.text = "Protein: $protein g (${proteinCalories} kcal)"
-        binding.fatCaloriesTextView.text = "Fat: $fat g (${fatCalories} kcal)"
+        val totalCalories = proteinCalories + carbsCalories + fatCalories
 
-        val totalCalories = carbsCalories + proteinCalories + fatCalories
-        binding.totalCaloriesTextView.text = "Total: $totalCalories kcal of $caloriesGoal kcal"
-
-        if (totalCalories > caloriesGoal) {
-            binding.totalCaloriesTextView.setTextColor(Color.RED)
-            binding.errorTextView.visibility = View.VISIBLE
-            binding.saveGoalsButton.isEnabled = false
-            binding.saveGoalsButton.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.darker_gray))
-        } else {
-            binding.totalCaloriesTextView.setTextColor(Color.WHITE)
-            binding.errorTextView.visibility = View.GONE
-            binding.saveGoalsButton.isEnabled = true
-            binding.saveGoalsButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.lavender))
+        // Update the calories goal to match the total calories from macronutrients
+        if (totalCalories != caloriesGoal) {
+            binding.caloriesGoalEditText.setText(totalCalories.toString())
         }
+
+        binding.proteinCaloriesTextView.text = "Protein: $protein g (${proteinCalories} kcal)"
+        binding.carbsCaloriesTextView.text = "Carbs: $carbs g (${carbsCalories} kcal)"
+        binding.fatCaloriesTextView.text = "Fat: $fat g (${fatCalories} kcal)"
+        binding.totalCaloriesTextView.text = "Total: $totalCalories kcal of ${binding.caloriesGoalEditText.text} kcal"
     }
 
     private fun saveGoals() {
-        val caloriesGoal = binding.caloriesGoalEditText.text.toString().trim()
-        val carbsGoal = binding.carbsGoalEditText.text.toString().trim()
-        val proteinGoal = binding.proteinGoalEditText.text.toString().trim()
-        val fatGoal = binding.fatGoalEditText.text.toString().trim()
-
-        if (caloriesGoal.isEmpty() || carbsGoal.isEmpty() || proteinGoal.isEmpty() || fatGoal.isEmpty()) {
-            Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-            return
-        }
-
         val goals = hashMapOf(
-            "caloriesGoal" to caloriesGoal,
-            "carbsGoal" to carbsGoal,
-            "proteinGoal" to proteinGoal,
-            "fatGoal" to fatGoal
+            "caloriesGoal" to binding.caloriesGoalEditText.text.toString(),
+            "proteinGoal" to binding.proteinGoalEditText.text.toString(),
+            "carbsGoal" to binding.carbsGoalEditText.text.toString(),
+            "fatGoal" to binding.fatGoalEditText.text.toString()
         )
 
-        val user = auth.currentUser
-        user?.let {
-            db.collection("UsersInfo").document(it.uid)
-                .update(goals as Map<String, Any>)
+        val user = FirebaseAuth.getInstance().currentUser
+        val db = FirebaseFirestore.getInstance()
+
+        user?.let { user ->
+            val uid = user.uid
+            db.collection("UsersInfo").document(uid)
+                .set(goals, SetOptions.merge())  // Adaugă obiectivele fără a suprascrie alte câmpuri
                 .addOnSuccessListener {
                     Toast.makeText(context, "Goals saved successfully", Toast.LENGTH_SHORT).show()
-                    // Navigate back to the profile fragment
-                    requireActivity().supportFragmentManager.popBackStack()
+
+                    // Verifică dacă informațiile din profil sunt completate
+                    db.collection("UsersInfo").document(uid)
+                        .get()
+                        .addOnSuccessListener { document ->
+                            if (document.exists()) {
+                                val preferredName = document.getString("preferredName")
+                                val weight = document.getString("weight")
+                                val height = document.getString("height")
+                                val age = document.getString("age")
+
+                                if (!preferredName.isNullOrEmpty() && !weight.isNullOrEmpty() &&
+                                    !height.isNullOrEmpty() && !age.isNullOrEmpty()) {
+                                    // Activează navigarea în bara de meniu dacă toate câmpurile sunt completate
+                                    (activity as? MainActivity)?.enableNavigation()
+                                }
+                            }
+                        }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(
-                        context,
-                        "Failed to save goals: ${e.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(context, "Failed to save goals: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
     }
