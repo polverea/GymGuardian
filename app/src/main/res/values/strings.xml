@@ -3,4 +3,11 @@
     <string name="default_web_clinet_id">923439859899-nab87bchno69j9ehoqa7hrbmt12bfslv.apps.googleusercontent.com</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="macros_text">Carbs: %1$d g, Protein: %2$d g, Fat: %3$d g</string>
+    <string name="nutriscore_text">Nutri-Score: %1$s</string>
+    <string name="time_added_text">Time Added: %1$s</string>
+    <string name="calories_text">Calories: %1$d kcal</string>
+    <string name="protein_text">Protein: %1$d g</string>
+    <string name="carbs_text">Carbs: %1$d g</string>
+    <string name="fat_text">Fat: %1$d g</string>
 </resources>

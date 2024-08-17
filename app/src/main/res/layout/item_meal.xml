@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="12dp"
     app:cardElevation="8dp"
     android:backgroundTint="@color/white">
 
@@ -11,37 +11,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:background="@color/light_gray"
-        android:gravity="center_vertical">
+        android:padding="12dp"
+        android:background="@color/lavender_gray"
+    android:gravity="center_vertical">
 
-        <!-- Meal Name -->
-        <TextView
-            android:id="@+id/mealNameTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Meal Name"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
+    <!-- Meal Name -->
+    <TextView
+        android:id="@+id/mealNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Meal Name"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:ellipsize="end" />
 
-        <!-- Meal Calories -->
-        <TextView
-            android:id="@+id/mealCaloriesTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0 kcal"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
+    <!-- Separator (Optional) -->
+    <TextView
+        android:id="@+id/separatorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="•"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:paddingHorizontal="8dp" />
 
-        <!-- Delete Button -->
-        <ImageButton
-            android:id="@+id/deleteMealButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:src="@drawable/baseline_delete_24"
-            app:tint="@color/white"
-            android:contentDescription="Delete meal" />
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+    <!-- Meal Calories -->
+    <TextView
+        android:id="@+id/mealCaloriesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 kcal"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <!-- Delete Button -->
+    <ImageButton
+        android:id="@+id/deleteMealButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/baseline_delete_24"
+        app:tint="@color/red"
+        android:contentDescription="Delete meal" />
+</LinearLayout>
+    </androidx.cardview.widget.CardView>

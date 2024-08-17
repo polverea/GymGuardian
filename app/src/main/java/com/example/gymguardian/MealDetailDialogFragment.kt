@@ -50,13 +50,13 @@ class MealDetailDialogFragment : DialogFragment() {
         val formattedTime = sdf.format(meal.timestamp.toDate())
         timeAddedTextView.text = "Time Added: $formattedTime"
 
-        if (meal.nutriScore != "N/A" && meal.nutriScore.isNotEmpty()) {
-            nutriScoreTextView.text = "Nutri-Score: ${meal.nutriScore}"
+        val nutriScore = meal.nutriScore
+        if (nutriScore != "N/A" && nutriScore.isNotEmpty()) {
+            nutriScoreTextView.text = "Nutri-Score: $nutriScore"
         } else {
             nutriScoreTextView.visibility = View.GONE
         }
     }
-
     companion object {
         @JvmStatic
         fun newInstance(meal: Meal) =
@@ -67,3 +67,4 @@ class MealDetailDialogFragment : DialogFragment() {
             }
     }
 }
+
