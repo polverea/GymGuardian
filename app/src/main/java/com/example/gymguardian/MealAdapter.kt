@@ -4,11 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MealAdapter(
     val meals: MutableList<Meal>,
@@ -19,38 +17,19 @@ class MealAdapter(
         val mealNameTextView: TextView = itemView.findViewById(R.id.mealNameTextView)
         val mealCaloriesTextView: TextView = itemView.findViewById(R.id.mealCaloriesTextView)
         val deleteMealButton: ImageButton = itemView.findViewById(R.id.deleteMealButton)
-        val expandableLayout: LinearLayout = itemView.findViewById(R.id.expandableLayout)
-        val mealQuantityTextView: TextView = itemView.findViewById(R.id.mealQuantityTextView)
-        val mealCarbsTextView: TextView = itemView.findViewById(R.id.mealCarbsTextView)
-        val mealProteinTextView: TextView = itemView.findViewById(R.id.mealProteinTextView)
-        val mealFatTextView: TextView = itemView.findViewById(R.id.mealFatTextView)
-        val timeAddedTextView: TextView = itemView.findViewById(R.id.timeAddedTextView) // Adăugăm TextView-ul pentru ora adăugării
 
         fun bind(meal: Meal) {
             mealNameTextView.text = meal.name
             mealCaloriesTextView.text = "${meal.calories} kcal"
-            timeAddedTextView.text = "Added at: ${SimpleDateFormat("HH:mm", Locale.getDefault()).format(meal.timestamp.toDate())}" // Setăm ora adăugării
-
-            // Bind expandable content initially
-            bindExpandableContent(meal)
 
             itemView.setOnClickListener {
-                if (expandableLayout.visibility == View.GONE) {
-                    expandableLayout.visibility = View.VISIBLE
-                } else {
-                    expandableLayout.visibility = View.GONE
-                }
+                val dialog = MealDetailDialogFragment.newInstance(meal)
+                dialog.show((itemView.context as AppCompatActivity).supportFragmentManager, "MealDetailDialog")
             }
+
             deleteMealButton.setOnClickListener {
                 onDeleteMeal(meal)
             }
-        }
-
-        private fun bindExpandableContent(meal: Meal) {
-            mealQuantityTextView.text = "Quantity: ${meal.quantity} g"
-            mealCarbsTextView.text = "Carbs: ${meal.carbs} g"
-            mealProteinTextView.text = "Protein: ${meal.protein} g"
-            mealFatTextView.text = "Fat: ${meal.fat} g"
         }
     }
 

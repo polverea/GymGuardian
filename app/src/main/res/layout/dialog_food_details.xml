@@ -49,6 +49,17 @@
         android:textColor="@android:color/white"
         android:paddingBottom="16dp" />
 
+    <!-- Nutri-Score -->
+    <TextView
+        android:id="@+id/nutriScoreTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nutri-Score: N/A"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingBottom="16dp" />
+
     <EditText
         android:id="@+id/quantityEditText"
         android:layout_width="match_parent"

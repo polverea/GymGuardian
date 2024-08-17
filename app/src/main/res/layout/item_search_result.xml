@@ -20,4 +20,12 @@
         android:text="0 kcal"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/foodQuantityTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quantity: 100 g"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
 </LinearLayout>

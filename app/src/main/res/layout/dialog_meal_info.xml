@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/lavender_gray">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/light_gray">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Meal Name centered -->
+            <TextView
+                android:id="@+id/mealNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Meal Name"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:paddingBottom="8dp" />
+
+            <!-- Nutritional information aligned to the left -->
+            <TextView
+                android:id="@+id/mealCaloriesTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0 kcal"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:paddingBottom="8dp" />
+
+            <TextView
+                android:id="@+id/mealQuantityTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quantity: 0 g"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:paddingBottom="4dp" />
+
+            <TextView
+                android:id="@+id/mealCarbsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Carbs: 0 g"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:paddingBottom="4dp" />
+
+            <TextView
+                android:id="@+id/mealProteinTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Protein: 0 g"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:paddingBottom="4dp" />
+
+            <TextView
+                android:id="@+id/mealFatTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fat: 0 g"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:paddingBottom="4dp" />
+
+            <TextView
+                android:id="@+id/timeAddedTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Time Added"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:paddingBottom="8dp" />
+
+            <TextView
+                android:id="@+id/nutriScoreTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nutri-Score: A"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

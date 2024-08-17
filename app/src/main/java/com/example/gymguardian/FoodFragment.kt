@@ -346,7 +346,6 @@ class FoodFragment : Fragment() {
             }
         }
     }
-
     private fun addManualMealToDatabase(
         mealType: String,
         mealName: String,
@@ -358,7 +357,7 @@ class FoodFragment : Fragment() {
     ) {
         val user = auth.currentUser
         user?.let {
-            val uid = it.uid // Aici se definește uid
+            val uid = it.uid
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val today = sdf.format(selectedDate.time)
             val mealId = UUID.randomUUID().toString()
@@ -371,7 +370,7 @@ class FoodFragment : Fragment() {
                 protein = protein,
                 fat = fat,
                 quantity = quantity,
-                timestamp = com.google.firebase.Timestamp.now() // Set current time
+                timestamp = com.google.firebase.Timestamp.now()
             )
 
             db.collection("UsersInfo").document(uid)
@@ -382,16 +381,26 @@ class FoodFragment : Fragment() {
                 .addOnSuccessListener {
                     Toast.makeText(context, "Meal added successfully", Toast.LENGTH_SHORT).show()
                     loadMeals()
-                    saveRecentFood(uid, meal.toProduct())
+
+                    // Normalizează valorile pentru 100g înainte de a salva în recentFoods
+                    val normalizedMeal = Meal(
+                        id = mealId,
+                        name = mealName,
+                        calories = (calories / (quantity / 100f)).roundToInt(),
+                        carbs = (carbs / (quantity / 100f)).roundToInt(),
+                        protein = (protein / (quantity / 100f)).roundToInt(),
+                        fat = (fat / (quantity / 100f)).roundToInt(),
+                        quantity = 100,
+                        timestamp = com.google.firebase.Timestamp.now()
+                    )
+
+                    saveRecentFood(uid, normalizedMeal.toProduct())
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(context, "Failed to add meal: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
     }
-
-
-
     private fun showFoodDetailsDialog(foodItem: Product, mealType: String) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_food_details, null)
         val dialogBuilder = AlertDialog.Builder(requireContext()).setView(dialogView)
@@ -402,6 +411,10 @@ class FoodFragment : Fragment() {
         dialogView.findViewById<TextView>(R.id.carbsTextView).text = "Carbs: ${(foodItem.nutriments.carbohydrates ?: 0f)}g"
         dialogView.findViewById<TextView>(R.id.proteinTextView).text = "Protein: ${(foodItem.nutriments.proteins ?: 0f)}g"
         dialogView.findViewById<TextView>(R.id.fatTextView).text = "Fat: ${(foodItem.nutriments.fat ?: 0f).toInt()}g"
+
+        val nutriScoreTextView = dialogView.findViewById<TextView>(R.id.nutriScoreTextView)
+        val nutriScore = foodItem.nutriscoreGrade?.uppercase() ?: "N/A"
+        nutriScoreTextView.text = "Nutri-Score: $nutriScore"
 
         val quantityEditText = dialogView.findViewById<EditText>(R.id.quantityEditText)
         val addMealButton = dialogView.findViewById<Button>(R.id.addMealButton)
@@ -430,7 +443,7 @@ class FoodFragment : Fragment() {
     ) {
         val user = auth.currentUser
         user?.let {
-            val uid = it.uid // Aici se definește uid
+            val uid = it.uid
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val today = sdf.format(selectedDate.time)
             val mealId = UUID.randomUUID().toString()
@@ -443,7 +456,8 @@ class FoodFragment : Fragment() {
                 protein = protein,
                 fat = fat,
                 quantity = quantity,
-                timestamp = com.google.firebase.Timestamp.now() // Set current time
+                nutriScore = selectedFoodItem.nutriscoreGrade ?: "",
+                timestamp = com.google.firebase.Timestamp.now()
             )
 
             db.collection("UsersInfo").document(uid)
@@ -455,7 +469,7 @@ class FoodFragment : Fragment() {
                     Toast.makeText(context, "Meal added successfully", Toast.LENGTH_SHORT).show()
                     alertDialog.dismiss()
                     loadMeals()
-                    // Save the recent food with values for 100g
+
                     saveRecentFood(uid, selectedFoodItem)
                 }
                 .addOnFailureListener { e ->

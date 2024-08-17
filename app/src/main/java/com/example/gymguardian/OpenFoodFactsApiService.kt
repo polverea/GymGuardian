@@ -23,7 +23,9 @@ data class ProductResponse(
 data class Product(
     val product_name: String = "",
     val nutriments: Nutriments = Nutriments(),
-    var timestamp: com.google.firebase.Timestamp? = null
+    @SerializedName("nutriscore_grade")
+    val nutriscoreGrade: String? = null,
+    var timestamp: com.google.firebase.Timestamp? = null,
 )
 
 data class Nutriments(

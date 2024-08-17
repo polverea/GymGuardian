@@ -10,96 +10,38 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="8dp"
         android:background="@color/light_gray"
         android:gravity="center_vertical">
 
-        <!-- Header View -->
-        <LinearLayout
-            android:id="@+id/headerLayout"
-            android:layout_width="match_parent"
+        <!-- Meal Name -->
+        <TextView
+            android:id="@+id/mealNameTextView"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="8dp">
+            android:layout_weight="1"
+            android:text="Meal Name"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/mealNameTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Meal Name"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/mealCaloriesTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0 kcal"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-
-            <ImageButton
-                android:id="@+id/deleteMealButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:src="@drawable/baseline_delete_24"
-                app:tint="@color/white"
-                android:contentDescription="Delete meal" />
-        </LinearLayout>
-
-        <!-- Expandable View -->
-        <LinearLayout
-            android:id="@+id/expandableLayout"
-            android:layout_width="match_parent"
+        <!-- Meal Calories -->
+        <TextView
+            android:id="@+id/mealCaloriesTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:padding="8dp"
-            android:background="@color/light_gray">
+            android:text="0 kcal"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/mealQuantityTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Quantity: 0 g"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/mealCarbsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Carbs: 0 g"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/mealProteinTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Protein: 0 g"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/mealFatTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fat: 0 g"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/timeAddedTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Time Added"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
-        </LinearLayout>
+        <!-- Delete Button -->
+        <ImageButton
+            android:id="@+id/deleteMealButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/baseline_delete_24"
+            app:tint="@color/white"
+            android:contentDescription="Delete meal" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

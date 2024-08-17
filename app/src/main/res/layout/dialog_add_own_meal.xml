@@ -1,99 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/lavender_gray"
-    android:gravity="center">
+    android:background="@color/lavender_gray">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Your Own Meal"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:paddingBottom="8dp" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-    <EditText
-        android:id="@+id/mealNameEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Meal Name"
-        android:background="@drawable/custom_edittext"
-        android:padding="8dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/darker_gray"
-        android:inputType="text" />
+        <!-- Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Your Own Meal"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingBottom="16dp" />
 
-    <EditText
-        android:id="@+id/caloriesEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Calories"
-        android:background="@drawable/custom_edittext"
-        android:padding="8dp"
-        android:layout_marginBottom="8dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/darker_gray"
-        android:inputType="number" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@color/lavender_gray"
+            android:layout_marginBottom="16dp"
+            android:elevation="4dp"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:layout_gravity="center_horizontal">
 
-    <EditText
-        android:id="@+id/carbsEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Carbohydrates (g)"
-        android:background="@drawable/custom_edittext"
-        android:padding="8dp"
-        android:layout_marginBottom="8dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/darker_gray"
-        android:inputType="number" />
+            <EditText
+                android:id="@+id/mealNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Meal Name"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray"
+                android:inputType="text" />
 
-    <EditText
-        android:id="@+id/proteinEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Protein (g)"
-        android:background="@drawable/custom_edittext"
-        android:padding="8dp"
-        android:layout_marginBottom="8dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/darker_gray"
-        android:inputType="number" />
+            <EditText
+                android:id="@+id/caloriesEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Calories"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray"
+                android:inputType="number" />
 
-    <EditText
-        android:id="@+id/fatEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Fat (g)"
-        android:background="@drawable/custom_edittext"
-        android:padding="8dp"
-        android:layout_marginBottom="8dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/darker_gray"
-        android:inputType="number" />
+            <EditText
+                android:id="@+id/carbsEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Carbohydrates (g)"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray"
+                android:inputType="number" />
 
-    <EditText
-        android:id="@+id/quantityEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Quantity (g)"
-        android:background="@drawable/custom_edittext"
-        android:padding="8dp"
-        android:layout_marginBottom="8dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/darker_gray"
-        android:inputType="number" />
+            <EditText
+                android:id="@+id/proteinEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Protein (g)"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray"
+                android:inputType="number" />
 
-    <Button
-        android:id="@+id/saveMealButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:backgroundTint="@color/lavender"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
+            <EditText
+                android:id="@+id/fatEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Fat (g)"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/quantityEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Quantity (g)"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/saveMealButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:backgroundTint="@color/lavender"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:padding="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+</ScrollView>

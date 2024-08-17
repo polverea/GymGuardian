@@ -41,11 +41,11 @@ class HomeFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = Firebase.firestore
 
-        sharedViewModel.profileUpdated.observe(viewLifecycleOwner, { updated ->
+        sharedViewModel.profileUpdated.observe(viewLifecycleOwner) { updated ->
             if (updated) {
                 loadUserData()
             }
-        })
+        }
 
         loadUserData()
     }
