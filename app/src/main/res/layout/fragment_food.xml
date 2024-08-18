@@ -14,11 +14,9 @@
         android:gravity="center"
         android:paddingBottom="16dp">
 
-        <!-- Include bara de navigare pentru selectarea datei -->
         <include
             layout="@layout/date_navigation_bar" />
 
-        <!-- Include secțiuni pentru fiecare masă -->
         <include
             layout="@layout/meal_section"
             android:id="@+id/breakfastSection" />

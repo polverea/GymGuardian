@@ -38,7 +38,6 @@ class ProfileFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = Firebase.firestore
 
-        // Dezactivează butonul "Set Goals" inițial
         binding.goalsButton.isEnabled = false
         binding.goalsButton.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.darker_gray))
 
@@ -74,7 +73,7 @@ class ProfileFragment : Fragment() {
                             heightEditText.setText(document.getString("height"))
                             ageEditText.setText(document.getString("age"))
                             saveButton.text = "Update"
-                            enableGoalsButtonIfAllFieldsAreFilled() // Verifică și activează butonul "Set Goals"
+                            enableGoalsButtonIfAllFieldsAreFilled()
                         }
                     }
                 }
@@ -115,7 +114,7 @@ class ProfileFragment : Fragment() {
                         Toast.makeText(context, "Details saved successfully", Toast.LENGTH_SHORT).show()
                         sharedViewModel.setProfileUpdated(true)
                         binding.saveButton.text = "Update"
-                        enableGoalsButtonIfAllFieldsAreFilled()  // Verifică dacă toate câmpurile sunt completate și activează butonul "Set Goals"
+                        enableGoalsButtonIfAllFieldsAreFilled()
                     }
                 }
                 .addOnFailureListener { e ->

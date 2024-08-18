@@ -64,7 +64,6 @@ class HomeFragment : Fragment() {
                         val dailyFat = document.getString("fatGoal")?.toInt() ?: 0
                         binding.welcomeTextView.text = "Welcome, $preferredName"
 
-                        // Load the consumed calories and macros
                         loadMeals(it.uid, dailyCalories, dailyCarbs, dailyProtein, dailyFat)
                     }
                 }
@@ -122,11 +121,9 @@ class HomeFragment : Fragment() {
             binding.consumedCaloriesTextView.text = "Consumed: $consumedCalories kcal"
             binding.remainingCaloriesTextView.text = "Remaining: ${dailyCalories - consumedCalories} kcal"
 
-            // Update progress bar
             binding.caloriesProgressBar.max = dailyCalories
             binding.caloriesProgressBar.progress = consumedCalories
 
-            // Verifică dacă caloriile consumate depășesc obiectivul zilnic
             if (consumedCalories > dailyCalories) {
                 binding.consumedCaloriesTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                 binding.consumedCaloriesTextView.text = "${binding.consumedCaloriesTextView.text} (Exceeded)"

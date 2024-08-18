@@ -1,22 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:title="Home"
         android:id="@+id/home"
-        android:icon="@drawable/baseline_home_24"/>
+        android:icon="@drawable/home_svgrepo_com"
+        android:title="Home"/>
     <item
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:title="Profile"
         android:id="@+id/profile"
-        android:icon="@drawable/baseline_man_24"/>
+        android:icon="@drawable/profile_1336_svgrepo_com"
+        android:title="Profile"/>
     <item
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:title="Food"
         android:id="@+id/food"
-        android:icon="@drawable/baseline_fastfood_24"/>
+        android:icon="@drawable/food_dish_svgrepo_com"
+        android:title="Food"/>
 </menu>
