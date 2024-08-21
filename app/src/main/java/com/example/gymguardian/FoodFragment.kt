@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -96,7 +97,7 @@ class FoodFragment : Fragment() {
         sectionView.findViewById<TextView>(R.id.mealTitle).text = mealName
         val recyclerView = sectionView.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = MealAdapter(mutableListOf()) { meal ->
+        recyclerView.adapter = MealAdapter(mutableListOf(), getCurrentDate(), mealName.lowercase(Locale.ROOT)) { meal ->
             auth.currentUser?.let {
                 deleteMeal(it.uid, getCurrentDate(), mealName.lowercase(Locale.ROOT), meal, sectionView)
             }
@@ -145,7 +146,6 @@ class FoodFragment : Fragment() {
                 val totalProtein = mealList.sumOf { it.protein }
                 val totalFat = mealList.sumOf { it.fat }
 
-                // Actualizează valorile pentru noile TextView-uri
                 sectionView.findViewById<TextView>(R.id.totalCaloriesTextView).text =
                     getString(R.string.calories_text, totalCalories)
                 sectionView.findViewById<TextView>(R.id.proteinTextView).text =
@@ -156,7 +156,7 @@ class FoodFragment : Fragment() {
                     getString(R.string.fat_text, totalFat)
 
                 val recyclerView = sectionView.findViewById<RecyclerView>(R.id.recyclerView)
-                val adapter = MealAdapter(mealList.toMutableList()) { meal ->
+                val adapter = MealAdapter(mealList.toMutableList(), date, mealType) { meal ->  // Aici am adăugat date și mealType
                     deleteMeal(uid, date, mealType, meal, sectionView)
                 }
                 recyclerView.adapter = adapter
@@ -167,6 +167,7 @@ class FoodFragment : Fragment() {
                 Toast.makeText(context, "Failed to load $mealType: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
     private fun deleteMeal(uid: String, date: String, mealType: String, meal: Meal, sectionView: View) {
         db.collection("UsersInfo").document(uid)
             .collection("Meals").document(date)
@@ -305,6 +306,17 @@ class FoodFragment : Fragment() {
         val uid = user.uid
         val mealId = UUID.randomUUID().toString()
 
+        val meal = Meal(
+            id = mealId,
+            name = mealName,
+            calories = calories,
+            carbs = carbs,
+            protein = protein,
+            fat = fat,
+            quantity = quantity,
+            timestamp = com.google.firebase.Timestamp.now()
+        )
+
         val normalizedMeal = Meal(
             id = mealId,
             name = mealName,
@@ -320,10 +332,10 @@ class FoodFragment : Fragment() {
             .collection("Meals").document(getCurrentDate())
             .collection(mealType)
             .document(mealId)
-            .set(normalizedMeal)
+            .set(meal)
             .addOnSuccessListener {
                 Toast.makeText(context, "Meal added successfully", Toast.LENGTH_SHORT).show()
-                alertDialog.dismiss()  // Dismiss the dialog after meal is added
+                alertDialog.dismiss()
                 loadMeals()
                 saveRecentFood(uid, normalizedMeal.toProduct())
             }
@@ -429,7 +441,7 @@ class FoodFragment : Fragment() {
             db.collection("UsersInfo").document(user.uid)
                 .collection("RecentFoods")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
-                .limit(5)
+                  .limit(5)
                 .get()
                 .addOnSuccessListener { documents ->
                     val filteredFoods = documents.mapNotNull { it.toObject(Product::class.java) }

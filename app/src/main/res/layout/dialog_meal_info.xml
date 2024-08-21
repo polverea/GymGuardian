@@ -1,10 +1,9 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    app:cardElevation="12dp"
-    app:cardBackgroundColor="@color/white">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/lavender_gray">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,23 +15,22 @@
         <!-- Meal Name -->
         <TextView
             android:id="@+id/mealNameTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Meal Name"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:paddingBottom="12dp" />
+            android:paddingBottom="8dp" />
 
         <!-- Calories -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="12dp"
-            android:elevation="6dp"
-            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            android:layout_marginBottom="6dp"
             android:background="@drawable/rounded_background"
             android:clipToPadding="false">
 
@@ -40,7 +38,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/fire_svgrepo_com"
-                android:layout_marginRight="8dp" />
+                android:layout_marginRight="6dp" />
 
             <TextView
                 android:id="@+id/mealCaloriesTextView"
@@ -48,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:text="Calories: 0 kcal"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Quantity -->
@@ -57,9 +55,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="12dp"
-            android:elevation="6dp"
-            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            android:layout_marginBottom="6dp"
             android:background="@drawable/rounded_background"
             android:clipToPadding="false">
 
@@ -67,7 +64,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/measure_svgrepo_com"
-                android:layout_marginRight="8dp" />
+                android:layout_marginRight="6dp" />
 
             <TextView
                 android:id="@+id/mealQuantityTextView"
@@ -84,9 +81,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="12dp"
-            android:elevation="6dp"
-            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            android:layout_marginBottom="6dp"
             android:background="@drawable/rounded_background"
             android:clipToPadding="false">
 
@@ -94,7 +90,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/bread_svgrepo_com"
-                android:layout_marginRight="8dp" />
+                android:layout_marginRight="6dp" />
 
             <TextView
                 android:id="@+id/mealCarbsTextView"
@@ -111,9 +107,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="12dp"
-            android:elevation="6dp"
-            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            android:layout_marginBottom="6dp"
             android:background="@drawable/rounded_background"
             android:clipToPadding="false">
 
@@ -121,7 +116,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/meat_food_eat_cooking_bbq_svgrepo_com"
-                android:layout_marginRight="8dp" />
+                android:layout_marginRight="6dp" />
 
             <TextView
                 android:id="@+id/mealProteinTextView"
@@ -138,9 +133,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="12dp"
-            android:elevation="6dp"
-            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            android:layout_marginBottom="6dp"
             android:background="@drawable/rounded_background"
             android:clipToPadding="false">
 
@@ -148,7 +142,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/fat_svgrepo_com"
-                android:layout_marginRight="8dp" />
+                android:layout_marginRight="6dp" />
 
             <TextView
                 android:id="@+id/mealFatTextView"
@@ -165,9 +159,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="12dp"
-            android:elevation="6dp"
-            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            android:layout_marginBottom="6dp"
             android:background="@drawable/rounded_background"
             android:clipToPadding="false">
 
@@ -175,7 +168,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/time_svgrepo_com"
-                android:layout_marginRight="8dp" />
+                android:layout_marginRight="6dp" />
 
             <TextView
                 android:id="@+id/timeAddedTextView"
@@ -192,8 +185,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:padding="12dp"
-            android:elevation="6dp"
+            android:padding="8dp"
             android:background="@drawable/rounded_background"
             android:clipToPadding="false">
 
@@ -203,8 +195,106 @@
                 android:layout_height="wrap_content"
                 android:text="Nutri-Score: A"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
+
+        <!-- Feedback Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feedback"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:paddingTop="12dp"
+            android:paddingBottom="8dp" />
+
+        <!-- Satiety Feedback -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Satiety:"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:gravity="center"/>
+
+            <RatingBar
+                android:id="@+id/satietyRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:rating="0"
+                android:progressDrawable="@drawable/custom_ratingbar"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <!-- Well-being Feedback -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Well-being:"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:gravity="center"/>
+
+            <RatingBar
+                android:id="@+id/wellBeingRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:rating="0"
+                android:progressDrawable="@drawable/custom_ratingbar"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <!-- Energy Level Feedback -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Energy Level:"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:gravity="center"/>
+
+            <RatingBar
+                android:id="@+id/energyLevelRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:rating="0"
+                android:progressDrawable="@drawable/custom_ratingbar"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</ScrollView>

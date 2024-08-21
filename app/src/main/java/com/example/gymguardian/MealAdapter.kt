@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MealAdapter(
     val meals: MutableList<Meal>,
+    private val date: String,  // Adăugăm date aici
+    private val mealType: String,  // Adăugăm mealType aici
     private val onDeleteMeal: (Meal) -> Unit
 ) : RecyclerView.Adapter<MealAdapter.MealViewHolder>() {
 
@@ -23,7 +25,7 @@ class MealAdapter(
             mealCaloriesTextView.text = "${meal.calories} kcal"
 
             itemView.setOnClickListener {
-                val dialog = MealDetailDialogFragment.newInstance(meal)
+                val dialog = MealDetailDialogFragment.newInstance(meal, date, mealType)
                 dialog.show((itemView.context as AppCompatActivity).supportFragmentManager, "MealDetailDialog")
             }
 

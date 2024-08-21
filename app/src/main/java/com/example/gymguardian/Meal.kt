@@ -13,5 +13,9 @@ data class Meal(
     val fat: Int = 0,
     val quantity: Int = 0,
     val nutriScore: String = "",
-    var timestamp: com.google.firebase.Timestamp = com.google.firebase.Timestamp.now()
+    var timestamp: com.google.firebase.Timestamp = com.google.firebase.Timestamp.now(),
+    var satiety: Float = 0f,
+    var wellBeing: Float = 0f,
+    var energyLevel: Float = 0f,
+    var additionalFeedback: String = ""
 ) : Parcelable
