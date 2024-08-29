@@ -350,7 +350,14 @@ class FoodFragment : Fragment() {
 
         dialogView.findViewById<TextView>(R.id.foodNameTextView).text = foodItem.product_name
         dialogView.findViewById<TextView>(R.id.caloriesTextView).text = getString(R.string.calories_text, foodItem.nutriments.energyKcal?.toInt() ?: 0)
-        dialogView.findViewById<TextView>(R.id.carbsTextView).text = getString(R.string.macros_text, foodItem.nutriments.carbohydrates?.toInt() ?: 0, foodItem.nutriments.proteins?.toInt() ?: 0, foodItem.nutriments.fat?.toInt() ?: 0)
+
+        val carbs = foodItem.nutriments.carbohydrates?.toInt() ?: 0
+        val protein = foodItem.nutriments.proteins?.toInt() ?: 0
+        val fat = foodItem.nutriments.fat?.toInt() ?: 0
+
+        dialogView.findViewById<TextView>(R.id.carbsTextView).text = getString(R.string.carbs_text, carbs)
+        dialogView.findViewById<TextView>(R.id.proteinTextView).text = getString(R.string.protein_text, protein)
+        dialogView.findViewById<TextView>(R.id.fatTextView).text = getString(R.string.fat_text, fat)
 
         val nutriScoreTextView = dialogView.findViewById<TextView>(R.id.nutriScoreTextView)
         val nutriScore = foodItem.nutriscoreGrade?.uppercase() ?: "N/A"
@@ -363,12 +370,12 @@ class FoodFragment : Fragment() {
             val quantity = quantityEditText.text.toString().toIntOrNull() ?: 100
             val factor = quantity / 100.0
 
-            val calories = (foodItem.nutriments.energyKcal ?: 0f) * factor
-            val carbs = (foodItem.nutriments.carbohydrates ?: 0f) * factor
-            val protein = (foodItem.nutriments.proteins ?: 0f) * factor
-            val fat = (foodItem.nutriments.fat ?: 0f) * factor
+            val adjustedCalories = (foodItem.nutriments.energyKcal ?: 0f) * factor
+            val adjustedCarbs = (foodItem.nutriments.carbohydrates ?: 0f) * factor
+            val adjustedProtein = (foodItem.nutriments.proteins ?: 0f) * factor
+            val adjustedFat = (foodItem.nutriments.fat ?: 0f) * factor
 
-            addSelectedFoodToMeal(foodItem, mealType, alertDialog, detailsDialog, calories.toInt(), carbs.toInt(), protein.toInt(), fat.toInt(), quantity)
+            addSelectedFoodToMeal(foodItem, mealType, alertDialog, detailsDialog, adjustedCalories.toInt(), adjustedCarbs.toInt(), adjustedProtein.toInt(), adjustedFat.toInt(), quantity)
         }
     }
     private fun addSelectedFoodToMeal(
